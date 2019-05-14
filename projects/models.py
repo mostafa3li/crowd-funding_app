@@ -19,7 +19,3 @@ class Project(models.Model):
 
 
 
-class Comment(models.Model):
-  title = models.CharField(max_length=120)
-  project = models.ForeignKey(Project, on_delete=models.CASCADE)
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
