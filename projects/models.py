@@ -9,16 +9,16 @@ class Category(models.Model):
 
 # Rate Model
 class Rates(models.Model):
-    rate = models.PositiveSmallIntegerField(
-        default=1,
+    rate = models.CharField(
+        default=16,max_length=120
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 # Report Model
 class Reports(models.Model):
-    report = models.PositiveSmallIntegerField(
-        default=1,
+    report = models.CharField(
+        default=1,max_length=120
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -31,7 +31,7 @@ class PImages(models.Model):
 # Donors Model
 class Donors(models.Model):
     user = models.ForeignKey(User, related_name='donor', on_delete=models.CASCADE)
-    donation = models.PositiveIntegerField(default=1)
+    donation = models.CharField(default=1,max_length=120)
 
 
 # Project Model
@@ -39,7 +39,7 @@ class Project(models.Model):
     title = models.CharField(max_length=120)
     details = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    target = models.PositiveIntegerField()
+    target = models.PositiveIntegerField(default=3)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField()
     project_owner = models.ForeignKey(User, on_delete=models.CASCADE)

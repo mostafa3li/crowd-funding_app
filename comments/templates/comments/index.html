@@ -1,0 +1,9 @@
+<h2> Add New Comment</h2>
+<form method="POST" action="{{project_id}}"> {% csrf_token %}
+{{ form.as_p }}
+<input type="submit" name="add">
+<!-- <a href="{{project_id}}">add</a> -->
+</form>
+{% for comment in comments %}
+{{comment.title}}
+{% endfor %}
