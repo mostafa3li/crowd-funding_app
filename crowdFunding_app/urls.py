@@ -17,9 +17,12 @@ from django.contrib import admin
 # from django.urls import  include
 from django.conf.urls import url, include
 from django.urls import path
+from users import views
 
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('projects/', include("projects.urls")),
-    path('users/', include("users.urls"))
+    path('users/', include("users.urls")),
+    path('logout/', views.user_logout, name='user_logout'),
+    path('users/index/', views.index, name='index'),
 ]
