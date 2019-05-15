@@ -1,5 +1,18 @@
 {% extends 'projects/layout.html' %} {% block content %}
 <section>
-  Show Project
+  <h1>Show Project</h1>
+
+  <h1 class="text-center mb-3">{{ project.title }}</h1>
+
+  <div class="media">
+    <img width="200" height="300" class="mr-3" alt="{{ project.title }}" />
+    <div class="media-body">
+      <h5 class="mt-0">{{ project.title }}</h5>
+      <p>
+        {{ project.description }}
+      </p>
+    </div>
+  </div>
+  <a href="{% url 'project_list' %}" class="btn btn-info mt-5">GO BACK</a>
 </section>
 {% endblock %}

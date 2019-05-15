@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .models import Project, Donors, Category, PImages, Reports, Rates, User
 
+from .forms import AddProjectForm
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -36,6 +37,18 @@ def get_all_projects_list(request):
 def project_view(request, pk):
     project = Project.objects.get(pk=pk)
     return render(request, 'projects/show.html', {'project': project})
+
+def add_project(request):
+  if request.method == 'POST':
+    my_form = AddProjectForm(request.POST)
+    if my_form.is_valid():
+      print(my_form.cleaned_data)
+      Project.objects.create(**my_form.cleaned_data, project_owner=request.user)
+    else:
+      print(my_form.errors)
+  else:
+    my_form = AddProjectForm()
+  return render(request, 'projects/create.html', {'form': my_form})
 
 
 # create new project using form submitting
