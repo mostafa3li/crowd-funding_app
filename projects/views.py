@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .models import Project, Donors, Category, PImages, Reports, Rates, User
 
-from .forms import AddProjectForm
+from .forms import AddProjectForm, ProjectModelForm
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -30,44 +30,46 @@ class ProjectForm(ModelForm):
 def get_all_projects_list(request):
     projects = list(Project.objects.all())
     data = {'projects': projects}
-    return render(request, 'projects/list.html', data)
+    return render(request, 'projects/list_projects.html', data)
 
 
 # return specific project to view by Primary Key or ID
 def project_view(request, pk):
     project = Project.objects.get(pk=pk)
-    return render(request, 'projects/show.html', {'project': project})
-
-def add_project(request):
-  if request.method == 'POST':
-    my_form = AddProjectForm(request.POST)
-    if my_form.is_valid():
-      print(my_form.cleaned_data)
-      Project.objects.create(**my_form.cleaned_data, project_owner=request.user)
-    else:
-      print(my_form.errors)
-  else:
-    my_form = AddProjectForm()
-  return render(request, 'projects/create.html', {'form': my_form})
-
+    return render(request, 'projects/show_project.html', {'project': project})
 
 # create new project using form submitting
-def create_new_project(request):
-    project_data_form = ProjectForm(request.POST or None)
-    if project_data_form.is_valid():
-        project_data_form.save()
-        return redirect('project_list')
-    return render(request, 'projects/list.html', {'project_data_form': project_data_form})
-
+def add_project(request):
+    if request.method == 'POST':
+        my_form = AddProjectForm(request.POST)
+        if my_form.is_valid():
+            print(my_form.cleaned_data)
+            Project.objects.create(**my_form.cleaned_data, project_owner=request.user)
+            return redirect('project_list')
+        else:
+            print(my_form.errors)
+    else:
+        my_form = AddProjectForm()
+    return render(request, 'projects/create.html', {'form': my_form})
 
 # update existing project
 def update_existing_project(request, pk):
     project = Project.objects.get(pk=pk)
-    project_form_data = ProjectForm(request.POST or None, instance=project)
-    if project_form_data.is_valid():
-        project_form_data.save()
+    my_form = ProjectModelForm(request.POST or None, instance=project)
+    if my_form.is_valid():
+        my_form.save()
         return redirect('project_list')
-    return render(request, 'projects/list.html', {'project_form_data': project_form_data})
+    context = {
+        'form' : my_form
+    }
+    return render(request, 'projects/create.html',  context)
+
+# def create_new_project(request):
+#     project_data_form = ProjectForm(request.POST or None)
+#     if project_data_form.is_valid():
+#         project_data_form.save()
+#         return redirect('project_list')
+#     return render(request, 'projects/list_projects.html', {'project_data_form': project_data_form})
 
 
 # delete existing project
@@ -76,7 +78,7 @@ def delete_existing_project(request, pk):
     if request.method == 'POST':
         project.delete()
         return redirect('project_list')
-    return render(request, 'projects/list.html', {'project': project})
+    return render(request, 'projects/cancel_project.html', {'project': project})
 
 
 def get_all_projects_user(request, user):
