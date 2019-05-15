@@ -139,3 +139,12 @@ def update_profile(request):
         'form' : my_form
     }
     return render(request, 'users/update_profile.html',  context)
+
+
+@login_required
+def delete_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        user.delete()
+        return HttpResponse("your account deleted succesfully")
+    return render(request, 'users/cancel_user.html', {'user': user})
