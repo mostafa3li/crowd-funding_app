@@ -3,6 +3,7 @@ from users.models import UserProfileInfo
 from django.contrib.auth.models import User
 
 
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
@@ -33,8 +34,43 @@ class UserForm(forms.ModelForm):
         if email and User.objects.filter(email=email).exclude(username=username).exists():
             raise forms.ValidationError('This Email is registered, use another email.')
         return email
-            
+
 class UserProfileInfoForm(forms.ModelForm):
      class Meta():
          model = UserProfileInfo
          fields = ('phone','profilePic')
+
+
+class UpdateProfile(forms.ModelForm):
+    username = forms.CharField(required=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    phone = forms.CharField(required=False)
+    birthdate = forms.CharField(required=False)
+    facebook = forms.CharField(required=False)
+    country = forms.CharField(required=False)
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name','phone','birthdate','facebook','country')
+
+    # def clean_email(self):
+    #     username = self.cleaned_data.get('username')
+    #     email = self.cleaned_data.get('email')
+
+    #     if email and User.objects.filter(email=email).exclude(username=username).count():
+    #         raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+    #     return email
+
+    # def save(self, commit=True):
+        
+    #     def __init__(self, *args, **kwargs):
+    #         user = kwargs.pop('user')
+    #         super(UpdateProfile, self).__init__(*args, **kwargs)
+            
+    #     user = super(UpdateProfile, self).save(commit=False)
+    #     user.email = user.email
+
+    #     if commit:
+    #         user.save()
+
+    #     return user

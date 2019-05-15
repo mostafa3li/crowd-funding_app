@@ -1,0 +1,12 @@
+  <div class="container">
+    <div class="jumbotron">
+     
+        <form method="POST" action="{% url 'users:update_profile' %}" class="" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+        
+      
+    </div>
+  </div>

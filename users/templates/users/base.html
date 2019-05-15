@@ -13,7 +13,8 @@
 {# Django Home Link / Admin Link / Register Link#}
           <li><a class="navbar-brand" >Crowd-Funding</a></li>
           <li><a class="navbar-link" href="{#}">Admin</a></li>
-          <li><a class="navbar-link" href="{% url 'users:register' %}">Register</a></li>     
+          <li><a class="navbar-link" href="{% url 'users:register' %}">Register</a></li>   
+          <li><a class="navbar-link" href="{% url 'users:update_profile' %}">Edit</a></li>    
           {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}
           <li><a class="navbar-link" href="{% url 'user_logout' %}">Logout</a></li>

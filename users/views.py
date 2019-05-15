@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from users.forms import UserForm,UserProfileInfoForm
+from users.forms import UserForm,UserProfileInfoForm,UpdateProfile
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -106,7 +106,36 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/users/user_login')
+
+
+# @login_required
+# def update_profile(request):
+#     args = {}
+
+#     if request.method == 'POST':
+#         form = UpdateProfile(request.POST, instance=request.user)
+#         form.actual_user = request.user
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('update_profile_success'))
+#     else:
+#         form = UpdateProfile()
+
+#     args['form'] = form
+#     return render(request, 'users/update_profile.html', args)
+
+
+@login_required
+def update_profile(request):
+    my_form = UpdateProfile(request.POST or None,instance=request.user)
+    if my_form.is_valid():
+        my_form.save()
+        return HttpResponse("your data updated succesfully")
+    context = {
+        'form' : my_form
+    }
+    return render(request, 'users/update_profile.html',  context)
