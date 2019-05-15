@@ -86,13 +86,19 @@ WSGI_APPLICATION = 'crowdFunding_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crowd_funding',
-        'USER': 'temp_root',
-        'PASSWORD': 'root',
+        'NAME': 'crowd-funding',
+        'USER': 'root',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': ''
     }
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'djangocrowd@gmail.com'
+EMAIL_HOST_PASSWORD = 'django1234@'
+EMAIL_PORT = 587
 
 
 # Password validation
@@ -126,6 +132,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)
