@@ -1,5 +1,5 @@
 from django import forms
-from users.models import UserProfileInfo
+from users.models import UserProfileInfo,UserEdit
 from django.contrib.auth.models import User
 
 
@@ -41,6 +41,12 @@ class UserProfileInfoForm(forms.ModelForm):
          fields = ('phone','profilePic')
 
 
+class UserEditForm(forms.ModelForm):
+     class Meta():
+        model = UserEdit
+        fields = ('birthdate','facebook','country')
+
+
 class UpdateProfile(forms.ModelForm):
     username = forms.CharField(required=True)
     first_name = forms.CharField(required=False)
@@ -51,8 +57,9 @@ class UpdateProfile(forms.ModelForm):
     country = forms.CharField(required=False)
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name','phone','birthdate','facebook','country')
-
+        fields = ('username', 'first_name', 'last_name')
+        
+        
     # def clean_email(self):
     #     username = self.cleaned_data.get('username')
     #     email = self.cleaned_data.get('email')

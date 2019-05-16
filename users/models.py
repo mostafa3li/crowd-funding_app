@@ -13,6 +13,11 @@ class UserProfileInfo(models.Model):
                                    message="phone number is not valid")])
     profilePic = models.ImageField(upload_to='profilePic', blank=True)
 
+class UserEdit(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    birthdate = models.DateTimeField()
+    facebook =models.CharField(max_length=500)
+    country = models.CharField(max_length=120)
 
 def __str__(self):
     return self.user.username

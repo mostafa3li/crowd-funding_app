@@ -18,6 +18,7 @@
           {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}
           <li><a class="navbar-link" href="{% url 'users:update_profile' %}">Edit</a></li> 
+          <li><a class="navbar-link" href="{% url 'users:user_profile' %}">Profile</a></li> 
           <li><a class="navbar-link" href="{% url 'users:delete_profile' %}">Delete</a></li> 
           <li><a class="navbar-link" href="{% url 'user_logout' %}">Logout</a></li>
           {% else %}

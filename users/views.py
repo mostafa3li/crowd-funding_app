@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from users.forms import UserForm,UserProfileInfoForm,UpdateProfile
+from users.forms import UserForm,UserProfileInfoForm,UpdateProfile,UserEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-
+from .models import UserProfileInfo
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -132,8 +132,22 @@ def user_logout(request):
 @login_required
 def update_profile(request):
     my_form = UpdateProfile(request.POST or None,instance=request.user)
+    
     if my_form.is_valid():
-        my_form.save()
+        user = my_form.save()
+        customUser= UserProfileInfo.objects.get(user_id=user.id)
+        image=customUser.profilePic
+        customUser.delete()
+        profile_form = UserProfileInfoForm(data=request.POST)
+        edit_form = UserEditForm(data=request.POST)
+        profile = profile_form.save(commit=False)
+        profile.user_id=user.id
+        profile.profilePic=image
+        edit = edit_form.save(commit=False)
+        edit.user = user
+        user.save()
+        profile.save()
+        edit.save()
         return HttpResponse("your data updated succesfully")
     context = {
         'form' : my_form
@@ -144,7 +158,15 @@ def update_profile(request):
 @login_required
 def delete_profile(request):
     user = request.user
+    customUser= UserProfileInfo.objects.get(user_id=user.id)
     if request.method == 'POST':
         user.delete()
+        customUser.delete()
         return HttpResponse("your account deleted succesfully")
-    return render(request, 'users/cancel_user.html', {'user': user})
+    return render(request, 'users/cancel_user.html', {'user': user,'customUser':customUser})
+
+@login_required
+def user_profile(request):
+    user = request.user
+    customUser= UserProfileInfo.objects.get(user_id=user.id)
+    return render(request, 'users/show_user.html', {'user': user,'customUser':customUser})
